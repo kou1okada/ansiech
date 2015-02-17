@@ -1,0 +1,292 @@
+#!/usr/bin/env bash
+#
+# BEGIN_EMBED: ansiech
+# BEGIN_EMBED: ansiech essential
+# BEGIN_EMBED: ansiech SGR
+#
+# ansiech - ANSI escape code helper
+# Copyright (c) 2015 Koichi OKADA. All rights reserved.
+# This script is distributed under the MIT license.
+# http://www.opensource.org/licenses/mit-license.php
+#
+# The official repository of this embed code is below.
+# https://github.com/kou1okada/ansiech
+#
+# References:
+#   Wikipedia / ANSI escape code
+#   http://en.wikipedia.org/wiki/ANSI_escape_code
+#
+
+# Select Graphic Rendition
+# Usage: SGR [effect ...]
+function SGR ()
+{
+  local i r s sep=""
+  for i; do
+    s=""
+    case "${i,,}" in
+    reset|normal)              s+="0" ;;
+    bold|bold:on)              s+="1" ;;
+    weight:bold)               s+="1" ;;
+    incresed_intencity)        s+="1" ;;
+    faint|faint:on)            s+="2" ;;
+    decreased_intencit)        s+="2" ;;
+    weight:faint)              s+="2" ;;
+    italic|italic:on)          s+="3" ;;
+    underline|underline:on)    s+="4" ;;
+    blink|blink:on)            s+="5" ;;
+    blink:slow)                s+="5" ;;
+    blink:rapid)               s+="6" ;;
+    image:negative)            s+="7" ;;
+    conceal)                   s+="8" ;;
+    crossed-out)               s+="9" ;;
+    font:0)                    s+="10" ;;
+    font:1)                    s+="11" ;;
+    font:2)                    s+="12" ;;
+    font:3)                    s+="13" ;;
+    font:4)                    s+="14" ;;
+    font:5)                    s+="15" ;;
+    font:6)                    s+="16" ;;
+    font:7)                    s+="17" ;;
+    font:8)                    s+="18" ;;
+    font:9)                    s+="19" ;;
+    fraktur)                   s+="20" ;;
+    bold:off)                  s+="21" ;;
+    weight:normal)             s+="21" ;;
+    normal_color)              s+="22" ;;
+    normal_intensity)          s+="22" ;;
+    not_italic)                s+="23" ;;
+    italic:off)                s+="23" ;;
+    not_fraktur)               s+="23" ;;
+    underline:none)            s+="24" ;;
+    blink:off)                 s+="25" ;;
+    image:positive)            s+="27" ;;
+    reveal)                    s+="28" ;;
+    not_crossed_out)           s+="29" ;;
+    fg:black)                  s+="30" ;;
+    fg:red)                    s+="31" ;;
+    fg:green)                  s+="32" ;;
+    fg:yellow)                 s+="33" ;;
+    fg:blue)                   s+="34" ;;
+    fg:magenta)                s+="35" ;;
+    fg:cyan)                   s+="36" ;;
+    fg:white)                  s+="37" ;;
+    fg:idx:*)                  s+="38;5;${i:7}" ;;
+    fg:rgb:*)                  s+="38;2;${i:7}" ;;
+    fg:default)                s+="39" ;;
+    bg:black)                  s+="40" ;;
+    bg:red)                    s+="41" ;;
+    bg:green)                  s+="42" ;;
+    bg:yellow)                 s+="43" ;;
+    bg:blue)                   s+="44" ;;
+    bg:magenta)                s+="45" ;;
+    bg:cyan)                   s+="46" ;;
+    bg:white)                  s+="47" ;;
+    bg:idx)                    s+="48;5;${i:7}" ;;
+    bg:rgb)                    s+="48;2;${i:7}" ;;
+    bg:default)                s+="49" ;;
+    framed)                    s+="51" ;;
+    encricled)                 s+="52" ;;
+    overlined)                 s+="53" ;;
+    not_framed)                s+="54" ;;
+    not_encircled)             s+="54" ;;
+    not_overlined)             s+="55" ;;
+    ideogram_underline)        s+="60" ;;
+    right_side_line)           s+="60" ;;
+    ideogram_double_underline) s+="61" ;;
+    right_side_double_line)    s+="61" ;;
+    ideogran_overline)         s+="62" ;;
+    left_side_line)            s+="63" ;;
+    ideogram_stress_marking)   s+="64" ;;
+    ideogram_attribute_off)    s+="65" ;;
+    esac
+    s="${s//:/;}"
+    [ -n "$s" ] && r+="${sep}${s}"
+    sep=";"
+  done
+  [ -n "$r" ] && r="\e[${r}m"
+  echo -ne "${r}"
+} #/SGR
+
+# END_EMBED: ansiech SGR
+
+# Cursor Up
+# Usage: CUU n
+function CUU ()
+{
+  echo -ne "\e[${1}A"
+} #/CUU
+
+# Cursor Down
+# Usage: CUD n
+function CUD ()
+{
+  echo -ne "\e[${1}B"
+} #/CUD
+
+# Cursor Forward
+# Usage: CUF n
+function CUF ()
+{
+  echo -ne "\e[${1}C"
+} #/CUF
+
+# Cursor Back
+# Usage: CUB n
+function CUB ()
+{
+  echo -ne "\e[${1}D"
+} #/CUB
+
+# Cursor Next Line
+# Usage: CNL n
+function CNL ()
+{
+  echo -ne "\e[${1}E"
+} #/CNL
+
+# Cursor Previous Line
+# Usage: CPL n
+function CPL ()
+{
+  echo -ne "\e[${1}F"
+} #/CPL
+
+# Cursor Horizontal Absolute
+# Usage: CHA n
+function CHA ()
+{
+  echo -ne "\e[${1}G"
+} #/CHA
+
+# Cursor Position
+# Usage: CUP n m
+function CUP ()
+{
+  echo -ne "\e[${1};${2}H"
+} #/CUP
+
+# Erase Display
+# Usage: ED n
+function ED ()
+{
+  echo -ne "\e[${1}J"
+} #/ED
+
+# Erase Line
+# Usage: EL n
+function EL ()
+{
+  echo -ne "\e[${1}K"
+} #/EL
+
+# Scroll Up
+# Usage: SU n
+function SU ()
+{
+  echo -ne "\e[${1}S"
+} #/SU
+
+# Scroll Down
+# Usage: SD n
+function SD ()
+{
+  echo -ne "\e[${1}T"
+} #/SD
+
+# Horizontal and Vertical Position
+# Usage: HVP n m
+function HVP ()
+{
+  echo -ne "\e[${1};${2}f"
+} #/HVP
+
+# AUX port On/Off
+# Usage: AUX (on|off|enable|disable)
+function AUX ()
+{
+  case "${1,,}" in
+  on|enable)   echo -ne "\e[5i" ;;
+  off|disable) echo -ne "\e[4i" ;
+  esac
+} #/AUX
+
+# Device Status Report
+# Usage: DSR
+function DSR ()
+{
+  echo -ne "\e[6n"
+} #/DSR
+
+# Saves Cursor Position
+# Usage: SCP
+function SCP ()
+{
+  echo -ne "\e[s"
+} #/SCP
+
+# Restores Cursor Position
+# Usage: RCP
+function RCP ()
+{
+  echo -ne "\e[u"
+} #/RCP
+
+# Hide/Show the cursor
+# Usage: TECTCEM (hide|show)
+function DECTCEM ()
+{
+  case "${1,,}" in
+  hide) echo -ne "\e[?25l" ;;
+  show) echo -ne "\e[?25h" ;;
+  esac
+} #/DECTCEM
+
+# END_EMBED: ansiech essential
+
+# Usage: ansiech [args ...]
+function ansiech ()
+{
+  if (( 0 < "$#" )); then
+    "$@"
+  fi
+} #/ansiech
+
+# Usage: aec [args ...]
+function aec ()
+{
+    ansiech "$@"
+} #/aec
+
+# Usage: aes [args ...]
+function aes ()
+{
+    ansiech "$@"
+} #/aes
+
+# Usage: ec [args ...]
+function ec ()
+{
+    ansiech "$@"
+} #/ec
+
+# Usage: es [args ...]
+function es ()
+{
+    ansiech "$@"
+} #/es
+
+# END_EMBED: ansiech
+
+SCRIPT_PATH="$(which "$0")"
+SCRIPT_FILE="${SCRIPT_PATH##*/}"
+SCRIPT_NAME="${SCRIPT_FILE%.*}"
+SCRIPT_DIR="${SCRIPT_PATH%/*}"
+SCRIPT_REALPATH="$(readlink -f "${SCRIPT_PATH}")"
+SCRIPT_REALFILE="${SCRIPT_REALPATH##*/}"
+SCRIPT_REALNAME="${SCRIPT_REALFILE%.*}"
+SCRIPT_REALDIR="${SCRIPT_REALPATH%/*}"
+COMMAND="${SCRIPT_NAME}"
+ENABLE_SUBCOMMAND=1
+
+"$SCRIPT_NAME" "$@"
